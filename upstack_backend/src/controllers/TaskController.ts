@@ -12,7 +12,7 @@ export class TaskController {
       task.project = req.project.id; // después le agrega el id del proyecto
       req.project.tasks.push(task.id); //Crearlo en el project, al arreglo tasks, el id de nuestro task actual
       await Promise.allSettled([task.save(), req.project.save()]); //Se encarga de que se ejecuten estos dos
-      res.status(201).json({ message: "Tarea creada con éxito" });
+      res.send("Proyecto creado correctamente");
     } catch (error) {
       res.status(500).json({ message: "Error interno del servidor" });
     }
