@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ProjectForm from "./ProjectForm";
 import { useForm } from "react-hook-form";
 import { Project, ProjectFormData } from "@/types/index";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProject } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
 
@@ -25,12 +25,18 @@ export default function EditProjectForm({ data, projectId }: EditProjectFormProp
     }
   });
 
+  //Para cachear, elimina los datos previos y hacer una uneva consulta
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: updateProject,
     onError: error => {
       toast.error(error.message);
     },
     onSuccess: data => {
+      //Para tener un state sincronizado
+      queryClient.invalidateQueries({ queryKey: ["projects"] }); //Una nueva query, a la queryKey para Projects
+      queryClient.invalidateQueries({ queryKey: ["editProject", projectId] }); //Una nueva query, a la queryKey para Projects
       toast.success(data);
       navigate("/");
     }

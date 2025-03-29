@@ -2,8 +2,8 @@ import { CorsOptions } from "cors";
 
 export const corsConfig: CorsOptions = {
   origin: function (origin, callback) {
-    console.log("🟡 Origin recibido:", origin);
-    console.log("🟢 Whitelist:", process.env.FRONTEND_URL);
+    // console.log("🟡 Origin recibido:", origin);
+    // console.log("🟢 Whitelist:", process.env.FRONTEND_URL);
 
     const whitelist = [process.env.FRONTEND_URL];
 
