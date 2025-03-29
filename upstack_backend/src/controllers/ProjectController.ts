@@ -4,11 +4,10 @@ import Project from "../models/Project";
 export class ProjectController {
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body); //Crea una instancia en el Project
-
     try {
       //OTRA FORMA: await Project.create(req.body);
       await project.save();
-      res.send("Proyecto creado correcatamente");
+      res.send("Proyecto creado correctamente");
     } catch (error) {
       console.log(error);
     }
@@ -17,11 +16,13 @@ export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {
     try {
       const projects = await Project.find({});
-      res.json(projects);
+      res.json(projects); // Enviar la respuesta correctamente
+      return;
     } catch (error) {
-      console.log(error);
+      console.error("Error obteniendo proyectos:", error);
+      res.status(500).json({ message: "Error obteniendo proyectos" });
+      return;
     }
-    res.send("Todos los proyectos");
   };
 
   static getProjectByID = async (req: Request, res: Response) => {

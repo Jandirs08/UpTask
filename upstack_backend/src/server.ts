@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import cors from "cors";
+import { corsConfig } from "./config/cors";
 import express from "express";
 import { connectDB } from "./config/db";
 import projectRoutes from "./routes/projectRoutes";
@@ -6,6 +8,7 @@ import projectRoutes from "./routes/projectRoutes";
 dotenv.config(); //Para usar el .env
 connectDB(); //llamar la función
 const app = express();
+app.use(cors(corsConfig));
 app.use(express.json());
 
 //Routes
