@@ -21,3 +21,10 @@ router.post(
   handleInputErrors,
   AuthController.createACcount
 );
+
+router.post(
+  "/confirm-account",
+  body("token").notEmpty().withMessage("El token no puede ir vacío"),
+  handleInputErrors,
+  AuthController.confirmAccount
+);
