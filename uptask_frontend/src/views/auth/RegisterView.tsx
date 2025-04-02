@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import { UserRegistrationForm } from "@/types/index";
 import ErrorMessage from "@/components/ErrorMessage";
-import { Link } from "react-router-dom";
+import { createAccount } from "@/api/AuthApi";
+import { toast } from "react-toastify";
 
 export default function RegisterView() {
   const initialValues: UserRegistrationForm = {
@@ -19,9 +22,22 @@ export default function RegisterView() {
     formState: { errors }
   } = useForm<UserRegistrationForm>({ defaultValues: initialValues });
 
-  const password = watch("password");
+  const { mutate } = useMutation({
+    mutationFn: createAccount,
+    onError: error => {
+      toast.error(error.message);
+    },
+    onSuccess: data => {
+      toast.success(data);
+      reset();
+    }
+  });
 
-  const handleRegister = (formData: UserRegistrationForm) => {};
+  const password = watch("password"); //HookForm: watch, que campo quieres estar revisando
+
+  const handleRegister = (formData: UserRegistrationForm) => {
+    mutate(formData);
+  };
 
   return (
     <>
@@ -93,7 +109,7 @@ export default function RegisterView() {
             className="w-full p-3  border-gray-300 border"
             {...register("password_confirmation", {
               required: "Repetir Password es obligatorio",
-              validate: value => value === password || "Los Passwords no son iguales"
+              validate: value => value === password || "Los Passwords no son iguales" //validación
             })}
           />
 
