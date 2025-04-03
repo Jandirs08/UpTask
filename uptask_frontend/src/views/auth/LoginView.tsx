@@ -32,7 +32,12 @@ export default function LoginView() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleLogin)} className="space-y-8 p-10 bg-white" noValidate>
+      <h1 className="text-5xl font-black text-white">Iniciar sesión</h1>
+      <p className="text-2xl font-light text-white mt-5">
+        Comienza a planear tus proyectos {""}
+        <span className=" text-fuchsia-500 font-bold">iniciando sesión</span>
+      </p>
+      <form onSubmit={handleSubmit(handleLogin)} className="space-y-8 p-10 bg-white mt-10" noValidate>
         <div className="flex flex-col gap-5">
           <label className="font-normal text-2xl">Email</label>
 
@@ -72,8 +77,9 @@ export default function LoginView() {
           className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
         />
       </form>
-      <nav className="mt-10 flex flex-col space-y-4 text-gray-300">
+      <nav className="mt-5 flex flex-col space-y-4 text-gray-300">
         <Link to={"/auth/register"}>¿No tienes cuenta? Crear una</Link>
+        <Link to={"/auth/forgot-password"}>¿Olvidaste tu contraseña? Reestablecer</Link>
       </nav>
     </>
   );
