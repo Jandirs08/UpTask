@@ -5,9 +5,12 @@ import { handleInputErrors } from "../middleware/validation";
 import { TaskController } from "../controllers/TaskController";
 import { ProjectExists } from "../middleware/project";
 import { taskBelongsToProject, taskExists } from "../middleware/task";
+import { authenticate } from "../middleware/auth";
 
 const router = Router();
 
+//Para que aplique el mismo middlerware a todos
+router.use(authenticate);
 router.post(
   "/",
   body("projectName").notEmpty().withMessage("El nombre del proyecto es obligatorio"),

@@ -5,6 +5,8 @@ import { checkPassword, hashPassword } from "../utils/auth";
 import Token from "../models/Token";
 import { generateToken } from "../utils/token";
 import { AuthEmail } from "../emails/AuthEmail";
+import { generateJWT } from "../utils/jwt";
+import { Types } from "mongoose";
 
 export class AuthController {
   static createACcount = async (req: Request, res: Response) => {
@@ -92,7 +94,10 @@ export class AuthController {
         res.status(401).json({ error: error.message });
         return;
       }
-      res.send("Auntenticado..");
+
+      //Generar el token
+      const token = generateJWT({ id: user._id });
+      res.send(token);
       return;
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" });

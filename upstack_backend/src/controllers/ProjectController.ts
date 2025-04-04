@@ -5,6 +5,8 @@ export class ProjectController {
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body); //Crea una instancia en el Project
     try {
+      //asigna un manager al proyecto
+      project.manager = req.user.id;
       //OTRA FORMA: await Project.create(req.body);
       await project.save();
       res.send("Proyecto creado correctamente");
@@ -15,7 +17,10 @@ export class ProjectController {
 
   static getAllProjects = async (req: Request, res: Response) => {
     try {
-      const projects = await Project.find({});
+      const projects = await Project.find({
+        //Solo los usuarios que pertenece al usuario
+        $or: [{ manager: { $in: req.user.id } }]
+      });
       res.json(projects); // Enviar la respuesta correctamente
       return;
     } catch (error) {
@@ -34,6 +39,10 @@ export class ProjectController {
         res.status(404).json({ error: error.message });
         return;
       }
+      if (project.manager.toString() !== req.user.id.toString()) {
+        const error = new Error("Acción no válida");
+        res.status(404).json({ error: error.message });
+      }
 
       res.json(project);
       return;
@@ -50,6 +59,10 @@ export class ProjectController {
         const error = new Error("Proyecto no encontrado");
         res.status(404).json({ error: error.message });
         return;
+      }
+      if (project.manager.toString() !== req.user.id.toString()) {
+        const error = new Error("Solo el manager puede actualizar el proyecto");
+        res.status(404).json({ error: error.message });
       }
       project.clientName = req.body.clientName;
       project.projectName = req.body.projectName;
@@ -70,6 +83,10 @@ export class ProjectController {
         const error = new Error("Proyecto no encontrado");
         res.status(404).json({ error: error.message });
         return;
+      }
+      if (project.manager.toString() !== req.user.id.toString()) {
+        const error = new Error("Solo el manager puede eliimnar el proyecto");
+        res.status(404).json({ error: error.message });
       }
       await project.deleteOne();
       res.send("Proyecto eliminado");
