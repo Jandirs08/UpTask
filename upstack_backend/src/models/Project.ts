@@ -9,6 +9,7 @@ export interface IProject extends Document {
   //Como si fuese un join, como son varias tareas un array
   tasks: PopulatedDoc<ITask & Document>[];
   manager: PopulatedDoc<IUser & Document>;
+  team: PopulatedDoc<IUser & Document>[];
 }
 
 const ProjectSchema: Schema = new Schema(
@@ -37,8 +38,15 @@ const ProjectSchema: Schema = new Schema(
     manager: {
       type: Types.ObjectId,
       ref: "User"
-    }
+    },
+    team: [
+      {
+        type: Types.ObjectId,
+        ref: "User"
+      }
+    ]
   },
+
   { timestamps: true }
 );
 
