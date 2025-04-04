@@ -42,6 +42,7 @@ export class ProjectController {
       if (project.manager.toString() !== req.user.id.toString()) {
         const error = new Error("Acción no válida");
         res.status(404).json({ error: error.message });
+        return;
       }
 
       res.json(project);
@@ -63,6 +64,7 @@ export class ProjectController {
       if (project.manager.toString() !== req.user.id.toString()) {
         const error = new Error("Solo el manager puede actualizar el proyecto");
         res.status(404).json({ error: error.message });
+        return;
       }
       project.clientName = req.body.clientName;
       project.projectName = req.body.projectName;
@@ -87,6 +89,7 @@ export class ProjectController {
       if (project.manager.toString() !== req.user.id.toString()) {
         const error = new Error("Solo el manager puede eliimnar el proyecto");
         res.status(404).json({ error: error.message });
+        return;
       }
       await project.deleteOne();
       res.send("Proyecto eliminado");
