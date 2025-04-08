@@ -19,7 +19,7 @@ export class ProjectController {
     try {
       const projects = await Project.find({
         //Solo los usuarios que pertenece al usuario
-        $or: [{ manager: { $in: req.user.id } }]
+        $or: [{ manager: { $in: req.user.id } }, { team: { $in: req.user.id } }] //si eres parte del equipo si puedes ver el proyecto
       });
       res.json(projects); // Enviar la respuesta correctamente
       return;
@@ -39,7 +39,7 @@ export class ProjectController {
         res.status(404).json({ error: error.message });
         return;
       }
-      if (project.manager.toString() !== req.user.id.toString()) {
+      if (project.manager.toString() !== req.user.id.toString() && !project.team.includes(req.user.id)) {
         const error = new Error("Acción no válida");
         res.status(404).json({ error: error.message });
         return;

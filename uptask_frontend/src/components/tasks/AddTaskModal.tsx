@@ -39,7 +39,7 @@ export default function AddTaskModal() {
       toast.error(error.message);
     },
     onSuccess: data => {
-      querClient.invalidateQueries({ queryKey: ["editProject", projectId] });
+      querClient.invalidateQueries({ queryKey: ["project", projectId] });
       toast.success(data);
       navigate(location.pathname, { replace: true });
       reset();
