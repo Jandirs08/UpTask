@@ -28,7 +28,6 @@ export default function ProjectDetailsView() {
 
   if (isLoading && authLoading) return "Cargando...";
   if (isError) return <Navigate to="/404" />;
-
   if (data && user)
     return (
       <>
